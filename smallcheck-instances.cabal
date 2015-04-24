@@ -1,0 +1,29 @@
+name:                smallcheck-instances
+version:             0.0.0
+synopsis:            Common smallcheck instances
+description:         Orphan instances for frequently used types coming
+                     with core libraries provided by GHC.
+homepage:            https://github.com/jdnavarro/smallcheck-instances
+bug-reports:         https://github.com/jdnavarro/smallcheck-instances/issues
+license:             BSD3
+license-file:        LICENSE
+author:              Danny Navarro
+maintainer:          j@dannynavarro.net
+category:            Testing
+build-type:          Simple
+extra-source-files:  README.md CHANGELOG.md
+cabal-version:       >=1.10
+
+source-repository head
+  type: git
+  location: git://github.com/jdnavarro/smallcheck-instances.git
+
+
+library
+  exposed-modules:     Test.SmallCheck.Instances
+  build-depends:       base >=4.6 && <4.9,
+                       bytestring >= 0.10.0,
+                       text >= 0.11.3,
+                       smallcheck >= 1.1
+  default-language:    Haskell2010
+  ghc-options:         -Wall
