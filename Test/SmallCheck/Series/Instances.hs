@@ -23,13 +23,13 @@ import Test.SmallCheck.Series.Text as Series.Text
 import Test.SmallCheck.Series.Text.Lazy as Series.Text.Lazy
 
 instance Monad m => Serial m B.ByteString where
-    series = Series.ByteString.simple
+    series = Series.ByteString.aaa
 
 instance Monad m => Serial m BL.ByteString where
-    series = Series.ByteString.Lazy.simple
+    series = Series.ByteString.Lazy.aaa
 
 instance Monad m => Serial m T.Text where
-    series = Series.Text.simple
+    series = Series.Text.aaa
 
 instance Monad m => Serial m TL.Text where
-    series = Series.Text.Lazy.simple
+    series = Series.Text.Lazy.aaa
