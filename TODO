@@ -1,0 +1,5 @@
+- Non-BMP chars for `Text`.
+- Documentation!
+- Instance and utility functions for `containers`, `unordered-containers`.
+- Change package name, perhaps `smallcheck-extra`?
+- `CoSerial` instances? Are they worth including?
