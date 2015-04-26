@@ -1,8 +1,9 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 {-|
-'Serial' and 'CoSerial' instances are provided for the following types:
+'Serial' instances are provided for the following types:
 
 * 'Data.ByteString.ByteString'
 * 'Data.ByteString.Lazy.ByteString'
@@ -12,47 +13,25 @@
 module Test.SmallCheck.Instances () where
 
 import qualified Data.ByteString as B
+import qualified Data.ByteString.Char8 as B8
 import qualified Data.ByteString.Lazy as BL
+import qualified Data.ByteString.Lazy.Char8 as L8
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
 import Test.SmallCheck.Series
 
 instance Monad m => Serial m B.ByteString where
-    series = cons0 mempty \/ cons2 B.append
-instance Monad m => CoSerial m B.ByteString where
-  coseries rs =
-    alts0 rs >>- \y ->
-    alts2 rs >>- \f ->
-    return $ \bs -> case B.uncons bs of
-                         Just (b,bs') -> f (B.singleton b) bs'
-                         Nothing -> y
+    series = generate $ \d -> (`B8.replicate` 'a') <$> [0..d]
 
 instance Monad m => Serial m BL.ByteString where
-    series = cons0 mempty \/ cons2 BL.append
-instance Monad m => CoSerial m BL.ByteString where
-  coseries rs =
-    alts0 rs >>- \y ->
-    alts2 rs >>- \f ->
-    return $ \bs -> case BL.uncons bs of
-                         Just (b,bs') -> f (BL.singleton b) bs'
-                         Nothing -> y
+    series = generate $ \d -> (`rep` 'a') <$> [0..d]
+      where
+        rep = L8.replicate . fromIntegral
 
 instance Monad m => Serial m T.Text where
-    series = cons0 mempty \/ cons2 T.append
-instance Monad m => CoSerial m T.Text where
-  coseries rs =
-    alts0 rs >>- \y ->
-    alts2 rs >>- \f ->
-    return $ \bs -> case T.uncons bs of
-                         Just (b,bs') -> f (T.singleton b) bs'
-                         Nothing -> y
+    series = generate $ \d -> (`T.replicate` "a") <$> [0..d]
 
 instance Monad m => Serial m TL.Text where
-    series = cons0 mempty \/ cons2 TL.append
-instance Monad m => CoSerial m TL.Text where
-  coseries rs =
-    alts0 rs >>- \y ->
-    alts2 rs >>- \f ->
-    return $ \bs -> case TL.uncons bs of
-                         Just (b,bs') -> f (TL.singleton b) bs'
-                         Nothing -> y
+    series = generate $ \d -> (`rep` "a") <$> [0..d]
+      where
+        rep = TL.replicate . fromIntegral
