@@ -10,7 +10,7 @@
 * 'Data.Text.Text'
 * 'Data.Text.Lazy.Text'
 -}
-module Test.SmallCheck.Instances () where
+module Test.SmallCheck.Series.Instances () where
 
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Char8 as B8

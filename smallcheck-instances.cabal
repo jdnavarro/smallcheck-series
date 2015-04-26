@@ -20,7 +20,7 @@ source-repository head
 
 
 library
-  exposed-modules:     Test.SmallCheck.Instances
+  exposed-modules:     Test.SmallCheck.Series.Instances
   build-depends:       base >=4.6 && <4.9,
                        bytestring >= 0.10.0,
                        text >= 0.11.3,
