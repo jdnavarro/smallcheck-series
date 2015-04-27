@@ -1,10 +1,10 @@
-name:                smallcheck-instances
+name:                smallcheck-extra
 version:             0.0.0
-synopsis:            Common smallcheck instances
-description:         Orphan instances for frequently used types coming
+synopsis:            Extra utilities for smallcheck
+description:         Extra utilities for creating `Series` for frequently used types coming
                      with core libraries provided by GHC.
-homepage:            https://github.com/jdnavarro/smallcheck-instances
-bug-reports:         https://github.com/jdnavarro/smallcheck-instances/issues
+homepage:            https://github.com/jdnavarro/smallcheck-extra
+bug-reports:         https://github.com/jdnavarro/smallcheck-extra/issues
 license:             BSD3
 license-file:        LICENSE
 author:              Danny Navarro
@@ -16,7 +16,7 @@ cabal-version:       >=1.10
 
 source-repository head
   type: git
-  location: git://github.com/jdnavarro/smallcheck-instances.git
+  location: git://github.com/jdnavarro/smallcheck-extra.git
 
 
 library
