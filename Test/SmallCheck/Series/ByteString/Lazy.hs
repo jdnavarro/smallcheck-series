@@ -42,5 +42,4 @@ jack' = jacked id
 
 jacked :: (String -> String) -> Series m ByteString
 jacked f = generate $ \d -> fmap pack . take d . words
-         $ f "All work and no play makes Jack a dull boy"
-
+         $ f "All work and no play makes Jack a dull boy\n"
