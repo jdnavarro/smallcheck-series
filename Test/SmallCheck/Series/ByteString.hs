@@ -10,6 +10,7 @@ module Test.SmallCheck.Series.ByteString
   ) where
 
 import Prelude hiding (replicate)
+import Control.Applicative ((<$>))
 import Data.ByteString (ByteString)
 import Data.ByteString.Char8 (pack, replicate)
 import Test.SmallCheck.Series

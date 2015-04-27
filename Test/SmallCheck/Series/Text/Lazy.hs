@@ -11,6 +11,7 @@ module Test.SmallCheck.Series.Text.Lazy
   ) where
 
 import Prelude hiding (replicate)
+import Control.Applicative ((<$>))
 import Data.Text.Lazy (Text, pack, singleton, replicate)
 import Test.SmallCheck.Series
 

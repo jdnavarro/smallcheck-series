@@ -10,6 +10,7 @@ module Test.SmallCheck.Series.ByteString.Lazy
   ) where
 
 import Prelude hiding (replicate)
+import Control.Applicative ((<$>))
 import Data.ByteString.Lazy (ByteString)
 import Data.ByteString.Lazy.Char8 (pack, replicate)
 import Test.SmallCheck.Series
