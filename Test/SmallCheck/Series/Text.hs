@@ -7,6 +7,7 @@ module Test.SmallCheck.Series.Text
   , alpha
   , jack
   , jack'
+  , nonBmp
   ) where
 
 import Prelude hiding (replicate)
@@ -40,3 +41,6 @@ jack' = jacked id
 jacked :: (String -> String) -> Series m Text
 jacked f = generate $ \d -> fmap pack . take d . words
          $ f "All work and no play makes Jack a dull boy\n"
+
+nonBmp :: Series m Text
+nonBmp = enumerated ['\0','\x1000'..'\xF0000']
