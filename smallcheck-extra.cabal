@@ -1,8 +1,9 @@
 name:                smallcheck-extra
 version:             0.0.0
 synopsis:            Extra utilities for smallcheck
-description:         Extra utilities for creating `Series` for frequently used types coming
-                     with core libraries provided by GHC.
+description:
+  Extra utilities for creating `Series` and orphan instances for
+  frequently used types coming with GHC core libraries.
 homepage:            https://github.com/jdnavarro/smallcheck-extra
 bug-reports:         https://github.com/jdnavarro/smallcheck-extra/issues
 license:             BSD3
