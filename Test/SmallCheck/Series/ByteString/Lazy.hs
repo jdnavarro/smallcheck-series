@@ -20,7 +20,10 @@ module Test.SmallCheck.Series.ByteString.Lazy
 
 import Prelude hiding (replicate)
 import Control.Applicative ((<$>))
-import Data.ByteString.Lazy.Char8 (ByteString, pack, replicate)
+import Data.Char (ord)
+import Data.Word (Word8)
+import Data.ByteString.Lazy (ByteString, pack, replicate)
+import qualified Data.ByteString.Lazy.Char8 as L8 (pack)
 import Test.SmallCheck.Series
 
 -- | Create a 'Data.ByteString.Lazy.ByteString' 'Series' growing with an extra
@@ -31,23 +34,23 @@ import Test.SmallCheck.Series
 --
 -- Use this when you don't care about the /byte/ inside 'Data.ByteString.Lazy.ByteString'.
 aaa :: Series m ByteString
-aaa = replicated 'a'
+aaa = replicated . fromIntegral $ ord 'a'
 
 -- | Create a 'Data.ByteString.Lazy.ByteString' 'Series' growing with an extra @NUL@ byte.
 --
 -- >>> list 4 zzz
 -- ["","\NUL","\NUL\NUL","\NUL\NUL\NUL","\NUL\NUL\NUL\NUL"]
 zzz :: Series m ByteString
-zzz = replicated '\0'
+zzz = replicated 0
 
-replicated :: Char -> Series m ByteString
+replicated :: Word8 -> Series m ByteString
 replicated c = generate $ \d -> (`rep` c) <$> [0..d]
   where
     rep = replicate . fromIntegral
 
 -- | Create a 'Data.ByteString.Lazy.ByteString' 'Series' growing with an extra custom byte.
 --
--- >>> list 4 $ replicated '@'
+-- >>> list 4 . replicated . fromIntegral $ ord '@'
 -- ["","@","@@","@@@","@@@@"]
 
 -- | Create a 'Data.ByteString.Lazy.ByteString' 'Series' growing with the @ASCII@
@@ -56,20 +59,20 @@ replicated c = generate $ \d -> (`rep` c) <$> [0..d]
 -- >>> list 4 alpha
 -- ["","a","ab","abc","abcd"]
 alpha :: Series m ByteString
-alpha = enumerated ['a'..'z']
+alpha = enumerated $ fromIntegral . ord <$> ['a'..'z']
 
 -- | Create a 'Data.ByteString.Lazy.ByteString' 'Series' growing by counting bytes.
 --
 -- >>> list 4 ascii
 -- ["","\NUL","\NUL\SOH","\NUL\SOH\STX","\NUL\SOH\STX\ETX"]
 ascii :: Series m ByteString
-ascii = enumerated ['\0'..'\255']
+ascii = enumerated [0..255]
 
 -- | Create a 'Data.ByteString.Lazy.ByteString' 'Series' growing with the given byte set.
 --
--- >>> list 4 $ enumerated "abc"
+-- >>> list 4 . enumerated $ fromIntegral . ord <$> "abc"
 -- ["","a","ab","abc","abc"]
-enumerated  :: String -> Series m ByteString
+enumerated  :: [Word8] -> Series m ByteString
 enumerated cs = generate $ \d -> (\n -> pack $ take n cs) <$> [0..d]
 
 -- | Create a 'Data.ByteString.Lazy.ByteString' 'Series' with a dummy @ASCII@ sentence.
@@ -82,6 +85,6 @@ enumerated cs = generate $ \d -> (\n -> pack $ take n cs) <$> [0..d]
 -- "All work and no play makes Jack a dull boy"
 jack :: Series m ByteString
 jack = generate $ \d ->
-    (\n -> pack . unwords . take n . words $ sentence) <$> [0..d]
+    (\n -> L8.pack . unwords . take n . words $ sentence) <$> [0..d]
   where
     sentence = "All work and no play makes Jack a dull boy"
