@@ -1,6 +1,0 @@
-- Instance and utility functions for `containers`, `unordered-containers`.
-- `CoSerial` instances? Are they worth including?
-- Precise Plane coordinates
-- Per block `Series` in BMP
-- `Series` with the first character for blocks in BMP
-- `Series` with a word with all first block characters of each BMP
