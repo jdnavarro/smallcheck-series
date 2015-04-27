@@ -8,6 +8,9 @@
 * 'Data.ByteString.Lazy.ByteString'
 * 'Data.Text.Text'
 * 'Data.Text.Lazy.Text'
+
+You may want to make sure the module where you import these instances is
+not meant to be imported.
 -}
 module Test.SmallCheck.Series.Instances () where
 
