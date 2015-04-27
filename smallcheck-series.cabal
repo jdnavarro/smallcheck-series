@@ -1,11 +1,11 @@
-name:                smallcheck-extra
+name:                smallcheck-series
 version:             0.0.0
-synopsis:            Extra utilities for smallcheck
+synopsis:            Extra series for smallcheck
 description:
-  Extra utilities for creating `Series` and orphan instances for
-  frequently used types coming with GHC core libraries.
-homepage:            https://github.com/jdnavarro/smallcheck-extra
-bug-reports:         https://github.com/jdnavarro/smallcheck-extra/issues
+  Utilities for creating @SmallCheck@ @Series@ and orphan @Serial@
+  instances for frequently used types coming with GHC core libraries.
+homepage:            https://github.com/jdnavarro/smallcheck-series
+bug-reports:         https://github.com/jdnavarro/smallcheck-series/issues
 license:             BSD3
 license-file:        LICENSE
 author:              Danny Navarro
@@ -17,7 +17,7 @@ cabal-version:       >=1.10
 
 source-repository head
   type: git
-  location: git://github.com/jdnavarro/smallcheck-extra.git
+  location: git://github.com/jdnavarro/smallcheck-series.git
 
 
 library
