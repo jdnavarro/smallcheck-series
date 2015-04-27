@@ -1,5 +1,6 @@
-- Non-BMP chars for `Text`.
-- Documentation!
 - Instance and utility functions for `containers`, `unordered-containers`.
-- Change package name, perhaps `smallcheck-extra`?
 - `CoSerial` instances? Are they worth including?
+- Precise Plane coordinates
+- Per block `Series` in BMP
+- `Series` with the first character for blocks in BMP
+- `Series` with a word with all first block characters of each BMP

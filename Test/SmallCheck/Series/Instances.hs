@@ -9,8 +9,13 @@
 * 'Data.Text.Text'
 * 'Data.Text.Lazy.Text'
 
-You may want to make sure the module where you import these instances is
-not meant to be imported.
+By default the most economical but less exhaustive series are provided.
+You may want to create your own instances for your own tests if this setting
+doesn't apply for your own tests. Check the utilities in the other modules
+in this package to create custom 'Series'.
+
+Make sure the module where you import these instances is not meant to be
+imported, otherwise the orphan instances might create issues.
 -}
 module Test.SmallCheck.Series.Instances () where
 

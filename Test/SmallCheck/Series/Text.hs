@@ -55,7 +55,7 @@ replicated c = generate $ \d -> (`replicate` singleton c) <$> [0..d]
 alpha :: Series m Text
 alpha = enumerated ['a'..'z']
 
--- | Create a 'Data.Text.Text' 'Series' growing with ASCII 'Char's set.
+-- | Create a 'Data.Text.Text' 'Series' growing with @ASCII@ 'Char's set.
 --
 -- >>> list 4 ascii
 -- ["","\NUL","\NUL\SOH","\NUL\SOH\STX","\NUL\SOH\STX\ETX"]
