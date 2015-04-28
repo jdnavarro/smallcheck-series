@@ -20,9 +20,8 @@ module Test.SmallCheck.Series.Text
   , nonBmp
   ) where
 
-import Prelude hiding (replicate)
-import Control.Applicative ((<$>))
-import Data.Text (Text, pack, singleton, replicate)
+import Data.List (inits)
+import Data.Text (Text, pack)
 import Test.SmallCheck.Series
 
 -- | Create a 'Data.Text.Text' 'Series' growing with an extra 'a' 'Char'.
@@ -46,7 +45,7 @@ zzz = replicated '\0'
 -- >>> list 4 $ replicated '☃'
 -- ["","\9731","\9731\9731","\9731\9731\9731","\9731\9731\9731\9731"]
 replicated :: Char -> Series m Text
-replicated c = generate $ \d -> (`replicate` singleton c) <$> [0..d]
+replicated c = generate $ \d -> fmap pack . inits $ replicate d c
 
 -- | Create a 'Data.Text.Text' 'Series' growing with the alphabet.
 --
@@ -64,10 +63,10 @@ ascii = enumerated ['\0'..'\255']
 
 -- | Create a 'Data.Text.Text' 'Series' growing with the given 'Char' set.
 --
--- >>> list 4 $ enumerated "abc"
--- ["","a","ab","abc","abc"]
+-- >>> list 4 $ enumerated "xyz"
+-- ["","x","xy","xyz"]
 enumerated :: String -> Series m Text
-enumerated cs = generate $ \d -> (\n -> pack $ take n cs) <$> [0..d]
+enumerated cs = generate $ \d -> fmap pack . inits $ take d cs
 
 -- | Create a 'Data.Text.Text' 'Series' with a dummy sentence. This can
 --   be used when you want to print a 'Series' to the screen.
@@ -75,13 +74,12 @@ enumerated cs = generate $ \d -> (\n -> pack $ take n cs) <$> [0..d]
 -- >>> let s = list 20 jack
 -- >>> take 3 s
 -- ["","All","All work"]
--- >>> s !! 10
--- "All work and no play makes Jack a dull boy"
+-- >>> last s
+-- "All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy."
 jack :: Series m Text
 jack = generate $ \d ->
-    (\n -> pack . unwords . take n . words $ sentence) <$> [0..d]
-  where
-    sentence = "All work and no play makes Jack a dull boy"
+    fmap (pack . unwords) . inits . take d . cycle . words $
+        "All work and no play makes Jack a dull boy."
 
 -- | Create a 'Data.Text.Text' 'Series' with the first character of each
 --   <https://en.wikipedia.org/wiki/Plane_(Unicode) Unicode plane>.

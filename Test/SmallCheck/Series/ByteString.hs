@@ -18,11 +18,10 @@ module Test.SmallCheck.Series.ByteString
   , jack
   ) where
 
-import Prelude hiding (replicate)
-import Control.Applicative ((<$>))
 import Data.Char (ord)
+import Data.List (inits)
 import Data.Word (Word8)
-import Data.ByteString (ByteString, pack, replicate)
+import Data.ByteString (ByteString, pack)
 import qualified Data.ByteString.Char8 as B8 (pack)
 import Test.SmallCheck.Series
 
@@ -48,7 +47,7 @@ zzz = replicated 0
 -- >>> list 4 . replicated . fromIntegral $ ord '@'
 -- ["","@","@@","@@@","@@@@"]
 replicated :: Word8 -> Series m ByteString
-replicated c = generate $ \d -> (`replicate` c) <$> [0..d]
+replicated c = generate $ \d -> fmap pack . inits $ replicate d c
 
 -- | Create a 'Data.ByteString.ByteString' 'Series' growing with the @ASCII@
 --   representation of the alphabet.
@@ -56,7 +55,7 @@ replicated c = generate $ \d -> (`replicate` c) <$> [0..d]
 -- >>> list 4 alpha
 -- ["","a","ab","abc","abcd"]
 alpha :: Series m ByteString
-alpha = enumerated $ fromIntegral . ord <$> ['a'..'z']
+alpha = enumerated $ fmap (fromIntegral . ord) ['a'..'z']
 
 -- | Create a 'Data.ByteString.ByteString' 'Series' growing by counting bytes.
 --
@@ -67,10 +66,10 @@ ascii = enumerated [0..255]
 
 -- | Create a 'Data.ByteString.ByteString' 'Series' growing with the given byte set.
 --
--- >>> list 4 . enumerated $ fromIntegral . ord <$> "abc"
--- ["","a","ab","abc","abc"]
+-- >>> list 4 . enumerated $ fmap (fromIntegral . ord) "abc"
+-- ["","a","ab","abc"]
 enumerated  :: [Word8] -> Series m ByteString
-enumerated cs = generate $ \d -> (\n -> pack $ take n cs) <$> [0..d]
+enumerated cs = generate $ \d -> fmap pack . inits $ take d cs
 
 -- | Create a 'Data.ByteString.ByteString' 'Series' with a dummy @ASCII@ sentence.
 --   This can be used when you want to print a 'Series' to the screen.
@@ -78,10 +77,9 @@ enumerated cs = generate $ \d -> (\n -> pack $ take n cs) <$> [0..d]
 -- >>> let s = list 20 jack
 -- >>> take 3 s
 -- ["","All","All work"]
--- >>> s !! 10
--- "All work and no play makes Jack a dull boy"
+-- >>> last s
+-- "All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy."
 jack :: Series m ByteString
 jack = generate $ \d ->
-    (\n -> B8.pack . unwords . take n . words $ sentence) <$> [0..d]
-  where
-    sentence = "All work and no play makes Jack a dull boy"
+    fmap (B8.pack . unwords) . inits . take d . cycle . words $
+        "All work and no play makes Jack a dull boy."
