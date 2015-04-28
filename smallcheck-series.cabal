@@ -1,9 +1,9 @@
 name:                smallcheck-series
 version:             0.1
-synopsis:            Extra series for smallcheck
+synopsis:            Extra SmallCheck series
 description:
-  Utilities for creating @SmallCheck@ @Series@ and orphan @Serial@
-  instances for frequently used types coming with GHC core libraries.
+  Orphan @Serial@ instances and utilities to create custom @Series@ for
+  common types.
 homepage:            https://github.com/jdnavarro/smallcheck-series
 bug-reports:         https://github.com/jdnavarro/smallcheck-series/issues
 license:             BSD3

@@ -7,69 +7,71 @@ imported @qualified@. For example:
 module Test.SmallCheck.Series.Text.Lazy
   (
   -- * Replication
-    aaa
-  , zzz
-  , replicated
+    replicateA
+  , replicateNull
+  , replicateChar
   -- * Enumeration
-  , ascii
-  , alpha
-  , enumerated
+  , enumAlphabet
+  , enumChars
+  , enumString
   -- * Printing
   , jack
   -- * Extra Unicode planes
-  , nonBmp
+  , enumNonBmp
   ) where
 
 import Data.List (inits)
 import Data.Text.Lazy (Text, pack)
 import Test.SmallCheck.Series
 
--- | Create a 'Data.Text.Lazy.Text' 'Series' growing with an extra 'a' 'Char'.
+-- | A 'Data.Text.Lazy.Text' 'Series' that grows by replicating the @a@ 'Char'.
 --
--- >>> list 4 aaa
+-- >>> list 4 replicateA
 -- ["","a","aa","aaa","aaaa"]
 --
 -- Use this when you don't care about the 'Char's inside 'Data.Text.Lazy.Text'.
-aaa :: Series m Text
-aaa = replicated 'a'
+replicateA :: Series m Text
+replicateA = replicateChar 'a'
 
--- | Create a 'Data.Text.Lazy.Text' 'Series' growing with an extra @NUL@ 'Char'.
+-- | A 'Data.Text.Lazy.Text' 'Series' that grows by replicating the @NUL@ 'Char'.
 --
--- >>> list 4 zzz
+-- >>> list 4 replicateNull
 -- ["","\NUL","\NUL\NUL","\NUL\NUL\NUL","\NUL\NUL\NUL\NUL"]
-zzz :: Series m Text
-zzz = replicated '\0'
+replicateNull :: Series m Text
+replicateNull = replicateChar '\0'
 
--- | Create a 'Data.Text.Lazy.Text' 'Series' growing with an extra custom 'Char'.
+-- | A 'Data.Text.Lazy.Text' 'Series' that grows by replicating the given 'Char'.
 --
--- >>> list 4 $ replicated '☃'
+-- >>> list 4 $ replicateChar '☃'
 -- ["","\9731","\9731\9731","\9731\9731\9731","\9731\9731\9731\9731"]
-replicated :: Char -> Series m Text
-replicated c = generate $ \d -> fmap pack . inits $ (replicate . fromIntegral) d c
+replicateChar :: Char -> Series m Text
+replicateChar c = generate $ \d -> fmap pack . inits $ replicate d c
 
--- | Create a 'Data.Text.Lazy.Text' 'Series' growing with the alphabet.
+-- | A 'Data.Text.Lazy.Text' 'Series' that grows by enumerating the latin alphabet.
 --
--- >>> list 4 alpha
+-- >>> list 4 enumAlphabet
 -- ["","a","ab","abc","abcd"]
-alpha :: Series m Text
-alpha = enumerated ['a'..'z']
+enumAlphabet :: Series m Text
+enumAlphabet = enumString ['a'..'z']
 
--- | Create a 'Data.Text.Lazy.Text' 'Series' growing with @ASCII@ 'Char's set.
+-- | A 'Data.Text.Lazy.Text' 'Series' that grows by enumerating every 'Char'.
 --
--- >>> list 4 ascii
+-- >>> list 4 enumChars
 -- ["","\NUL","\NUL\SOH","\NUL\SOH\STX","\NUL\SOH\STX\ETX"]
-ascii :: Series m Text
-ascii = enumerated ['\0'..'\255']
+enumChars :: Series m Text
+enumChars = enumString ['\0'..]
 
--- | Create a 'Data.Text.Lazy.Text' 'Series' growing with the given 'Char' set.
+-- | A 'Data.Text.Lazy.Text' 'Series' that grows by enumerating every
+--   'Char' in the given 'String'. Notice that the 'String' can be infinite.
 --
--- >>> list 4 $ enumerated "abc"
--- ["","a","ab","abc"]
-enumerated :: String -> Series m Text
-enumerated cs = generate $ \d -> fmap pack . inits $ take d cs
+-- >>> list 5 $ enumString "xyz"
+-- ["","x","xy","xyz"]
+enumString :: String -> Series m Text
+enumString cs = generate $ \d -> fmap pack . inits $ take d cs
 
--- | Create a 'Data.Text.Lazy.Text' 'Series' with a dummy sentence. This can
---   be used when you want to print a 'Series' to the screen.
+-- | A 'Data.Text.Lazy.Text' 'Series' that grows with English words.
+--
+--   This is useful when you want to print 'Series'.
 --
 -- >>> let s = list 20 jack
 -- >>> take 3 s
@@ -81,15 +83,15 @@ jack = generate $ \d ->
     fmap (pack . unwords) . inits . take d . cycle . words $
         "All work and no play makes Jack a dull boy."
 
--- | Create a 'Data.Text.Lazy.Text' 'Series' with the first character of each
+-- | A 'Data.Text.Lazy.Text' 'Series' that grows with the first character of each
 --   <https://en.wikipedia.org/wiki/Plane_(Unicode) Unicode plane>.
 --
--- >>> list 3 nonBmp
+-- >>> list 3 enumNonBmp
 -- ["","\NUL","\NUL\65536","\NUL\65536\131072"]
 --
 -- Notice that this covers the 16 unicode planes.
 --
--- >>> last (list 16 nonBmp) == last (list 17 nonBmp)
+-- >>> last (list 16 enumNonBmp) == last (list 17 enumNonBmp)
 -- True
-nonBmp :: Series m Text
-nonBmp = enumerated ['\0','\x10000'..'\xF0000']
+enumNonBmp :: Series m Text
+enumNonBmp = enumString ['\0','\x10000'..'\xF0000']

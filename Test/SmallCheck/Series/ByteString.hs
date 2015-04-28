@@ -7,13 +7,13 @@ imported @qualified@. For example:
 module Test.SmallCheck.Series.ByteString
   (
   -- * Replication
-    aaa
-  , zzz
-  , replicated
+    replicateA
+  , replicate0
+  , replicateW8
   -- * Enumeration
-  , ascii
-  , alpha
-  , enumerated
+  , enumW8s
+  , enumAlphabet
+  , enumList
   -- * Printing
   , jack
   ) where
@@ -25,54 +25,61 @@ import Data.ByteString (ByteString, pack)
 import qualified Data.ByteString.Char8 as B8 (pack)
 import Test.SmallCheck.Series
 
--- | Create a 'Data.ByteString.ByteString' 'Series' growing with an extra
---   /byte/ representing the 'a' 'Char' in @ASCII@.
+-- | A 'Data.ByteString.ByteString' 'Series' that grows by replicating
+--   the @97@ 'Word8', which encodes the 'a' 'Char' in @ASCII@.
 --
--- >>> list 4 aaa
+-- >>> list 4 replicateA
 -- ["","a","aa","aaa","aaaa"]
 --
--- Use this when you don't care about the /byte/ inside 'Data.ByteString.ByteString'.
-aaa :: Series m ByteString
-aaa = replicated . fromIntegral $ ord 'a'
+-- Use this when you don't care about the 'Word8' inside 'Data.ByteString.ByteString'.
+replicateA :: Series m ByteString
+replicateA = replicateW8 97
 
--- | Create a 'Data.ByteString.ByteString' 'Series' growing with an extra @NUL@ byte.
+-- | A 'Data.ByteString.ByteString' 'Series' that grows by replicating
+--   the @0@ 'Word8'.
 --
--- >>> list 4 zzz
+-- >>> list 4 replicate0
 -- ["","\NUL","\NUL\NUL","\NUL\NUL\NUL","\NUL\NUL\NUL\NUL"]
-zzz :: Series m ByteString
-zzz = replicated 0
+replicate0 :: Series m ByteString
+replicate0 = replicateW8 0
 
--- | Create a 'Data.ByteString.ByteString' 'Series' growing with an extra custom byte.
+-- | A 'Data.ByteString.ByteString' 'Series' that grows by replicating
+--   the given 'Word8'.
 --
--- >>> list 4 . replicated . fromIntegral $ ord '@'
+-- >>> list 4 $ replicateW8 64
 -- ["","@","@@","@@@","@@@@"]
-replicated :: Word8 -> Series m ByteString
-replicated c = generate $ \d -> fmap pack . inits $ replicate d c
+replicateW8 :: Word8 -> Series m ByteString
+replicateW8 b =
+    generate $ \d -> fmap pack . inits $ replicate d b
 
--- | Create a 'Data.ByteString.ByteString' 'Series' growing with the @ASCII@
---   representation of the alphabet.
+-- | A 'Data.ByteString.ByteString' 'Series' that grows by enumerating
+--   every 'Word8'.
 --
--- >>> list 4 alpha
--- ["","a","ab","abc","abcd"]
-alpha :: Series m ByteString
-alpha = enumerated $ fmap (fromIntegral . ord) ['a'..'z']
-
--- | Create a 'Data.ByteString.ByteString' 'Series' growing by counting bytes.
---
--- >>> list 4 ascii
+-- >>> list 4 enumW8s
 -- ["","\NUL","\NUL\SOH","\NUL\SOH\STX","\NUL\SOH\STX\ETX"]
-ascii :: Series m ByteString
-ascii = enumerated [0..255]
+enumW8s :: Series m ByteString
+enumW8s = enumList [0..255]
 
--- | Create a 'Data.ByteString.ByteString' 'Series' growing with the given byte set.
+-- | A 'Data.ByteString.ByteString' 'Series' that grows by enumerating
+--   the 'Word8's which encode the latin alphabet in @ASCII@.
 --
--- >>> list 4 . enumerated $ fmap (fromIntegral . ord) "abc"
--- ["","a","ab","abc"]
-enumerated  :: [Word8] -> Series m ByteString
-enumerated cs = generate $ \d -> fmap pack . inits $ take d cs
+-- >>> list 4 enumAlphabet
+-- ["","a","ab","abc","abcd"]
+enumAlphabet :: Series m ByteString
+enumAlphabet = enumList $ fmap (fromIntegral . ord) ['a'..'z']
 
--- | Create a 'Data.ByteString.ByteString' 'Series' with a dummy @ASCII@ sentence.
---   This can be used when you want to print a 'Series' to the screen.
+-- | A 'Data.ByteString.ByteString' 'Series' that grows by enumerating
+--   every 'Word8' in the given list.
+--
+-- >>> list 4 . enumList $ fmap (fromIntegral . ord) "abc"
+-- ["","a","ab","abc"]
+enumList  :: [Word8] -> Series m ByteString
+enumList cs = generate $ \d -> fmap pack . inits $ take d cs
+
+-- | A 'Data.ByteString.ByteString' 'Series' that grows with @ASCII@
+--   dummy English words encoded in @ASCII@.
+--
+--   This is useful when you want to print 'Series'.
 --
 -- >>> let s = list 20 jack
 -- >>> take 3 s
