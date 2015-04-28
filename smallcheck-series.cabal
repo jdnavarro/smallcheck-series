@@ -1,5 +1,5 @@
 name:                smallcheck-series
-version:             0.1
+version:             0.2
 synopsis:            Extra SmallCheck series
 description:
   Orphan @Serial@ instances and utilities to create custom @Series@ for
