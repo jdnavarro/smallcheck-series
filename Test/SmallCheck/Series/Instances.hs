@@ -23,7 +23,9 @@ import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
+import qualified Data.Map as Map
 import Test.SmallCheck.Series
+
 
 import Test.SmallCheck.Series.ByteString as Series.ByteString
 import Test.SmallCheck.Series.ByteString.Lazy as Series.ByteString.Lazy
@@ -41,3 +43,6 @@ instance Monad m => Serial m T.Text where
 
 instance Monad m => Serial m TL.Text where
     series = Series.Text.Lazy.replicateA
+
+instance (Serial m k, Serial m v) => Serial m (Map.Map k v) where
+    series = Map.singleton <$> series <~> series
