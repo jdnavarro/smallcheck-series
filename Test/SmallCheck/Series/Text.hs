@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-|
 Following the convention from "Data.Text", this module is intended to be
 imported @qualified@. For example:
@@ -20,9 +21,14 @@ module Test.SmallCheck.Series.Text
   , enumNonBmp
   ) where
 
-import Data.List (inits)
-import Data.Text (Text, pack)
+#if !MIN_VERSION_base(4,8,0)
+import Control.Applicative ((<$>))
+#endif
+import Data.Text (Text)
+import qualified Data.Text.Lazy as L (toStrict)
 import Test.SmallCheck.Series
+
+import qualified Test.SmallCheck.Series.Text.Lazy as L.Series
 
 -- | A 'Data.Text.Text' 'Series' that grows by replicating the @a@ 'Char'.
 --
@@ -31,35 +37,35 @@ import Test.SmallCheck.Series
 --
 -- Use this when you don't care about the 'Char's inside 'Data.Text.Text'.
 replicateA :: Series m Text
-replicateA = replicateChar 'a'
+replicateA = L.toStrict <$> L.Series.replicateA
 
 -- | A 'Data.Text.Text' 'Series' that grows by replicating the @NUL@ 'Char'.
 --
 -- >>> list 4 replicateNull
 -- ["","\NUL","\NUL\NUL","\NUL\NUL\NUL","\NUL\NUL\NUL\NUL"]
 replicateNull :: Series m Text
-replicateNull = replicateChar '\0'
+replicateNull = L.toStrict <$> L.Series.replicateNull
 
 -- | A 'Data.Text.Text' 'Series' that grows by replicating the given 'Char'.
 --
 -- >>> list 4 $ replicateChar '☃'
 -- ["","\9731","\9731\9731","\9731\9731\9731","\9731\9731\9731\9731"]
 replicateChar :: Char -> Series m Text
-replicateChar c = generate $ \d -> fmap pack . inits $ replicate d c
+replicateChar = fmap L.toStrict . L.Series.replicateChar
 
 -- | A 'Data.Text.Text' 'Series' that grows by enumerating the latin alphabet.
 --
 -- >>> list 4 enumAlphabet
 -- ["","a","ab","abc","abcd"]
 enumAlphabet :: Series m Text
-enumAlphabet = enumString ['a'..'z']
+enumAlphabet = L.toStrict <$> L.Series.enumAlphabet
 
 -- | A 'Data.Text.Text' 'Series' that grows by enumerating every 'Char'.
 --
 -- >>> list 4 enumChars
 -- ["","\NUL","\NUL\SOH","\NUL\SOH\STX","\NUL\SOH\STX\ETX"]
 enumChars :: Series m Text
-enumChars = enumString ['\0'..]
+enumChars = L.toStrict <$> L.Series.enumChars
 
 -- | A 'Data.Text.Text' 'Series' that grows by enumerating every 'Char' in the
 --   given 'String'. Notice that the 'String' can be infinite.
@@ -67,7 +73,7 @@ enumChars = enumString ['\0'..]
 -- >>> list 5 $ enumString "xyz"
 -- ["","x","xy","xyz"]
 enumString :: String -> Series m Text
-enumString cs = generate $ \d -> fmap pack . inits $ take d cs
+enumString = fmap L.toStrict . L.Series.enumString
 
 -- | A 'Data.Text.Text' 'Series' that grows with English words.
 --
@@ -79,9 +85,7 @@ enumString cs = generate $ \d -> fmap pack . inits $ take d cs
 -- >>> last s
 -- "All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy."
 jack :: Series m Text
-jack = generate $ \d ->
-    fmap (pack . unwords) . inits . take d . cycle . words $
-        "All work and no play makes Jack a dull boy."
+jack = L.toStrict <$> L.Series.jack
 
 -- | A 'Data.Text.Text' 'Series' that grows with the first character of each
 --   <https://en.wikipedia.org/wiki/Plane_(Unicode) Unicode plane>.
