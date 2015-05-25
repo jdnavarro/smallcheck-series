@@ -12,7 +12,7 @@ author:              Danny Navarro
 maintainer:          j@dannynavarro.net
 category:            Testing
 build-type:          Simple
-extra-source-files:  README.md CHANGELOG.md
+extra-source-files:  README.md CHANGELOG.md AUTHORS.md
 cabal-version:       >=1.10
 
 source-repository head
