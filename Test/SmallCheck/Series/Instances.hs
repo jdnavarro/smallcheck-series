@@ -27,6 +27,7 @@ import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
+import Data.Map
 import qualified Data.Map as Map
 import Test.SmallCheck.Series
 
@@ -38,15 +39,54 @@ import Test.SmallCheck.Series.Text.Lazy as Series.Text.Lazy
 
 instance Monad m => Serial m B.ByteString where
     series = Series.ByteString.replicateA
+instance Monad m => CoSerial m B.ByteString where
+    coseries rs =
+        alts0 rs >>- \y ->
+        alts2 rs >>- \f ->
+            return $ \bs -> case B.uncons bs of
+                Nothing -> y
+                Just (b,bs') -> f (B.singleton b) bs'
 
 instance Monad m => Serial m BL.ByteString where
     series = Series.ByteString.Lazy.replicateA
+instance Monad m => CoSerial m BL.ByteString where
+    coseries rs =
+        alts0 rs >>- \y ->
+        alts2 rs >>- \f ->
+            return $ \bs -> case BL.uncons bs of
+                Nothing -> y
+                Just (b,bs') -> f (BL.singleton b) bs'
 
 instance Monad m => Serial m T.Text where
     series = Series.Text.replicateA
+instance Monad m => CoSerial m T.Text where
+    coseries rs =
+        alts0 rs >>- \y ->
+        alts2 rs >>- \f ->
+            return $ \bs -> case T.uncons bs of
+                Nothing -> y
+                Just (b,bs') -> f (T.singleton b) bs'
 
 instance Monad m => Serial m TL.Text where
     series = Series.Text.Lazy.replicateA
+instance Monad m => CoSerial m TL.Text where
+    coseries rs =
+        alts0 rs >>- \y ->
+        alts2 rs >>- \f ->
+            return $ \bs -> case TL.uncons bs of
+                Nothing -> y
+                Just (b,bs') -> f (TL.singleton b) bs'
 
-instance (Serial m k, Serial m v) => Serial m (Map.Map k v) where
+instance (Serial m k, Serial m v) => Serial m (Map k v) where
     series = Map.singleton <$> series <~> series
+instance (Ord k, CoSerial m k, CoSerial m v) => CoSerial m (Map k v) where
+    coseries rs =
+        alts0 rs >>- \y ->
+        alts2 rs >>- \f ->
+            return $ \m -> case pop m of
+                Nothing -> y
+                Just ((k,v), m') -> f (Map.singleton k v) m'
+      where
+        pop m = case Map.toList m of
+                     [] -> Nothing
+                     (kv:its) -> Just (kv, Map.fromList its)
