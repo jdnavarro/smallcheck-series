@@ -3,3 +3,4 @@ cabal.sandbox.config
 dist
 tags
 .stack-work/
+cabal.config

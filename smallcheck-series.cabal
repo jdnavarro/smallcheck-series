@@ -44,4 +44,4 @@ test-suite doctests
   ghc-options:         -Wall -threaded
   build-depends:       base >=4.6 && <4.9,
                        Glob >=0.7.5,
-                       doctest >=0.10.1
+                       doctest >=0.9.10

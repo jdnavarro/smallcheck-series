@@ -1,6 +1,1 @@
-flags: {}
-packages:
-- '.'
-extra-deps:
-- doctest-0.10.1
-resolver: lts-2.18
+stack-7.8.yaml
