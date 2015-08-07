@@ -1,9 +1,12 @@
 name:                smallcheck-series
-version:             0.3
+version:             0.4
 synopsis:            Extra SmallCheck series and utilities
 description:
-  Orphan @Serial@ instances and utilities to create and manipulate
-  @Series@ for common types.
+  Orphan
+  @<https://hackage.haskell.org/package/smallcheck-1.1.1/docs/Test-SmallCheck-Series.html#t:Serial Serial>@
+  instances and utilities to create and manipulate
+  @<https://hackage.haskell.org/package/smallcheck-1.1.1/docs/Test-SmallCheck-Series.html#t:Series Series>@
+  for common types.
 homepage:            https://github.com/jdnavarro/smallcheck-series
 bug-reports:         https://github.com/jdnavarro/smallcheck-series/issues
 license:             BSD3
