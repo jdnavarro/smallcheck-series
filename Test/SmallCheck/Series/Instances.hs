@@ -65,36 +65,32 @@ instance Monad m => Serial m Int64 where
 instance Monad m => CoSerial m Int64 where
     coseries rs = (. (fromIntegral :: Int64 -> Int)) <$> coseries rs
 
-instance Monad m => Serial m Word where
-    series = generate $ \d -> take (d+1) [0..maxBound]
-instance Monad m => CoSerial m Word where
-    coseries rs =
-        alts0 rs >>- \z ->
-        alts1 rs >>- \f ->
-        return $ \w ->
-        if w > 0
-           then f (w-1)
-           else z
+instance Monad m => Serial m Word where series = nats0
+instance Monad m => CoSerial m Word where coseries = conats0
 
-instance Monad m => Serial m Word8 where
-    series = (fromIntegral :: Word -> Word8) <$> series
-instance Monad m => CoSerial m Word8 where
-    coseries rs = (. (fromIntegral :: Word8 -> Word)) <$> coseries rs
+instance Monad m => Serial m Word8 where series = nats0
+instance Monad m => CoSerial m Word8 where coseries = conats0
 
-instance Monad m => Serial m Word16 where
-    series = (fromIntegral :: Word -> Word16) <$> series
-instance Monad m => CoSerial m Word16 where
-    coseries rs = (. (fromIntegral :: Word16 -> Word)) <$> coseries rs
+instance Monad m => Serial m Word16 where series = nats0
+instance Monad m => CoSerial m Word16 where coseries = conats0
 
-instance Monad m => Serial m Word32 where
-    series = (fromIntegral :: Word -> Word32) <$> series
-instance Monad m => CoSerial m Word32 where
-    coseries rs = (. (fromIntegral :: Word32 -> Word)) <$> coseries rs
+instance Monad m => Serial m Word32 where series = nats0
+instance Monad m => CoSerial m Word32 where coseries = conats0
 
-instance Monad m => Serial m Word64 where
-    series = (fromIntegral :: Word -> Word64) <$> series
-instance Monad m => CoSerial m Word64 where
-    coseries rs = (. (fromIntegral :: Word64 -> Word)) <$> coseries rs
+instance Monad m => Serial m Word64 where series = nats0
+instance Monad m => CoSerial m Word64 where coseries = conats0
+
+nats0 :: (Integral n, Bounded n) => Series m n
+nats0 = generate $ \d -> take (d+1) [0..maxBound]
+
+conats0 :: (Integral a, CoSerial m a) => Series m b -> Series m (a -> b)
+conats0 rs =
+    alts0 rs >>- \z ->
+    alts1 rs >>- \f ->
+    return $ \n ->
+    if n > 0
+        then f (n-1)
+        else z
 
 instance Monad m => Serial m B.ByteString where
     series = cons0 B.empty \/ cons2 B.cons
