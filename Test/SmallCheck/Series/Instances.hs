@@ -65,20 +65,36 @@ instance Monad m => Serial m Int64 where
 instance Monad m => CoSerial m Int64 where
     coseries rs = (. (fromIntegral :: Int64 -> Int)) <$> coseries rs
 
-instance Monad m => Serial m Word where series = positive
-instance Monad m => CoSerial m Word where coseries = copositive
+instance Monad m => Serial m Word where
+    series = generate $ \d -> take (d+1) [0..maxBound]
+instance Monad m => CoSerial m Word where
+    coseries rs =
+        alts0 rs >>- \z ->
+        alts1 rs >>- \f ->
+        return $ \w ->
+        if w > 0
+           then f (w-1)
+           else z
 
-instance Monad m => Serial m Word8 where series = positive
-instance Monad m => CoSerial m Word8 where coseries = copositive
+instance Monad m => Serial m Word8 where
+    series = (fromIntegral :: Word -> Word8) <$> series
+instance Monad m => CoSerial m Word8 where
+    coseries rs = (. (fromIntegral :: Word8 -> Word)) <$> coseries rs
 
-instance Monad m => Serial m Word16 where series = positive
-instance Monad m => CoSerial m Word16 where coseries = copositive
+instance Monad m => Serial m Word16 where
+    series = (fromIntegral :: Word -> Word16) <$> series
+instance Monad m => CoSerial m Word16 where
+    coseries rs = (. (fromIntegral :: Word16 -> Word)) <$> coseries rs
 
-instance Monad m => Serial m Word32 where series = positive
-instance Monad m => CoSerial m Word32 where coseries = copositive
+instance Monad m => Serial m Word32 where
+    series = (fromIntegral :: Word -> Word32) <$> series
+instance Monad m => CoSerial m Word32 where
+    coseries rs = (. (fromIntegral :: Word32 -> Word)) <$> coseries rs
 
-instance Monad m => Serial m Word64 where series = positive
-instance Monad m => CoSerial m Word64 where coseries = copositive
+instance Monad m => Serial m Word64 where
+    series = (fromIntegral :: Word -> Word64) <$> series
+instance Monad m => CoSerial m Word64 where
+    coseries rs = (. (fromIntegral :: Word64 -> Word)) <$> coseries rs
 
 instance Monad m => Serial m B.ByteString where
     series = cons0 B.empty \/ cons2 B.cons
@@ -133,16 +149,3 @@ instance (Ord k, CoSerial m k, CoSerial m v) => CoSerial m (Map k v) where
         pop m = case Map.toList m of
                      [] -> Nothing
                      (kv:its) -> Just (kv, Map.fromList its)
-
--- * Internal
-positive :: Integral n => Series m n
-positive = generate $ \d -> [0..fromIntegral d]
-
-copositive :: (Num a, Ord a, CoSerial m a) => Series m b -> Series m (a -> b)
-copositive rs =
-    alts0 rs >>- \z ->
-    alts1 rs >>- \f ->
-    return $ \w ->
-      if w > 0
-        then f (w-1)
-        else z
