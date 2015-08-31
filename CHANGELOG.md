@@ -4,6 +4,10 @@ follows the formatting recommendations from [Keep a
 CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## [Unreleased][unreleased]
+### Changed
+- Serial instances are now exhaustive.
+
 ## [0.4] - 2015-08-06
 ### Added
 - Support for stack.
@@ -30,6 +34,7 @@ Versioning](http://semver.org/).
 - Initial set of utilities for creating `ByteString` and `Text` `Series`.
 - `Serial` `ByteString` and `Text` instances.
 
+[unreleased]: https://github.com/jdnavarro/smallcheck-series/compare/v0.3...HEAD
 [0.4]: https://github.com/jdnavarro/smallcheck-series/compare/v0.3...v0.4
 [0.3]: https://github.com/jdnavarro/smallcheck-series/compare/v0.2...v0.3
 [0.2]: https://github.com/jdnavarro/smallcheck-series/compare/v0.1...v0.2
