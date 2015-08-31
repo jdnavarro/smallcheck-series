@@ -1,3 +1,6 @@
+{-|
+Extra utility functions to manipulate 'Series'.
+-}
 module Test.SmallCheck.Series.Utils
   (
   -- * Zipping
@@ -37,8 +40,8 @@ zipLogic gx gy =
 -- | /One-to-One/ zipping of 3 'MonadLogic' instances. You can use for
 --   'Test.SmallCheck.Series' like this:
 --
--- >>> list 2 $ zipLogic3 (series :: Series Identity Char) (series :: Series Identity Int) (series :: Series Identity Text)
--- [('a',0,""),('b',1,"a"),('c',-1,"aa")]
+-- >>> list 3 $ zipLogic3 (series :: Series Identity Char) (series :: Series Identity Int) (series :: Series Identity Text)
+-- [('a',0,""),('b',1,"a"),('c',-1,"b"),('d',2,"aa")]
 
 -- Thanks to Roman Cheplyaka: https://groups.google.com/d/msg/haskell-tasty/k0dXCx9EBsc/XYkCTjYKqswJ
 zipLogic3 :: MonadLogic m => m a -> m b -> m c -> m (a, b, c)
