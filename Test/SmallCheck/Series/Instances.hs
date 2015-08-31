@@ -7,6 +7,9 @@
 
 * 'Data.Word'
 * 'Data.Word8'
+* 'Data.Word16'
+* 'Data.Word32'
+* 'Data.Word64'
 * 'Data.ByteString.ByteString'
 * 'Data.ByteString.Lazy.ByteString'
 * 'Data.Text.Text'
@@ -27,9 +30,8 @@ module Test.SmallCheck.Series.Instances () where
 
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative ((<$>))
-import Data.Word (Word)
 #endif
-import Data.Word (Word8)
+import Data.Word
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
@@ -43,6 +45,15 @@ instance Monad m => CoSerial m Word where coseries = copositive
 
 instance Monad m => Serial m Word8 where series = positive
 instance Monad m => CoSerial m Word8 where coseries = copositive
+
+instance Monad m => Serial m Word16 where series = positive
+instance Monad m => CoSerial m Word16 where coseries = copositive
+
+instance Monad m => Serial m Word32 where series = positive
+instance Monad m => CoSerial m Word32 where coseries = copositive
+
+instance Monad m => Serial m Word64 where series = positive
+instance Monad m => CoSerial m Word64 where coseries = copositive
 
 instance Monad m => Serial m B.ByteString where
     series = cons0 B.empty \/ cons2 B.cons
