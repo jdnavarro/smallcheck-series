@@ -27,6 +27,7 @@ module Test.SmallCheck.Series.Instances () where
 
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative ((<$>))
+import Data.Word (Word)
 #endif
 import Data.Word (Word8)
 import qualified Data.ByteString as B
