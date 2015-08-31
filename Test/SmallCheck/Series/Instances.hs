@@ -10,6 +10,10 @@
 * 'Data.Word16'
 * 'Data.Word32'
 * 'Data.Word64'
+* 'Data.Int8'
+* 'Data.Int16'
+* 'Data.Int32'
+* 'Data.Int64'
 * 'Data.ByteString.ByteString'
 * 'Data.ByteString.Lazy.ByteString'
 * 'Data.Text.Text'
@@ -31,6 +35,7 @@ module Test.SmallCheck.Series.Instances () where
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative ((<$>))
 #endif
+import Data.Int
 import Data.Word
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
@@ -39,6 +44,26 @@ import qualified Data.Text.Lazy as TL
 import Data.Map
 import qualified Data.Map as Map
 import Test.SmallCheck.Series
+
+instance Monad m => Serial m Int8 where
+    series = (fromIntegral :: Int -> Int8) <$> series
+instance Monad m => CoSerial m Int8 where
+    coseries rs = (. (fromIntegral :: Int8 -> Int)) <$> coseries rs
+
+instance Monad m => Serial m Int16 where
+    series = (fromIntegral :: Int -> Int16) <$> series
+instance Monad m => CoSerial m Int16 where
+    coseries rs = (. (fromIntegral :: Int16 -> Int)) <$> coseries rs
+
+instance Monad m => Serial m Int32 where
+    series = (fromIntegral :: Int -> Int32) <$> series
+instance Monad m => CoSerial m Int32 where
+    coseries rs = (. (fromIntegral :: Int32 -> Int)) <$> coseries rs
+
+instance Monad m => Serial m Int64 where
+    series = (fromIntegral :: Int -> Int64) <$> series
+instance Monad m => CoSerial m Int64 where
+    coseries rs = (. (fromIntegral :: Int64 -> Int)) <$> coseries rs
 
 instance Monad m => Serial m Word where series = positive
 instance Monad m => CoSerial m Word where coseries = copositive
