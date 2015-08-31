@@ -4,9 +4,13 @@ follows the formatting recommendations from [Keep a
 CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## [Unreleased][unreleased]
+## [0.5] - 2015-08-31
 ### Changed
-- Serial instances are now exhaustive.
+- `Text` and `ByteString` Serial instances are now exhaustive.
+
+### Added
+- `Serial` and `CoSerial` instances for `Word`, `Word8`, `Int16`.
+- `Serial` and `CoSerial` instances for `Int8`, `Int16`.
 
 ## [0.4] - 2015-08-06
 ### Added
@@ -34,7 +38,7 @@ Versioning](http://semver.org/).
 - Initial set of utilities for creating `ByteString` and `Text` `Series`.
 - `Serial` `ByteString` and `Text` instances.
 
-[unreleased]: https://github.com/jdnavarro/smallcheck-series/compare/v0.3...HEAD
+[0.5]: https://github.com/jdnavarro/smallcheck-series/compare/v0.4...v0.5
 [0.4]: https://github.com/jdnavarro/smallcheck-series/compare/v0.3...v0.4
 [0.3]: https://github.com/jdnavarro/smallcheck-series/compare/v0.2...v0.3
 [0.2]: https://github.com/jdnavarro/smallcheck-series/compare/v0.1...v0.2
