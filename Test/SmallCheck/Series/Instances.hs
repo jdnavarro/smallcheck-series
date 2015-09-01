@@ -1,6 +1,7 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE MultiWayIf #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 {-|
 'Serial' instances are provided for the following types:
@@ -35,35 +36,45 @@ module Test.SmallCheck.Series.Instances () where
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative ((<$>))
 #endif
+import Control.Applicative ((<|>), empty)
 import Data.Int
 import Data.Word
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
-import Data.Map
+import Data.Map (Map)
 import qualified Data.Map as Map
 import Test.SmallCheck.Series
+import Control.Monad.Logic (interleave)
 
-instance Monad m => Serial m Int8 where
-    series = (fromIntegral :: Int -> Int8) <$> series
-instance Monad m => CoSerial m Int8 where
-    coseries rs = (. (fromIntegral :: Int8 -> Int)) <$> coseries rs
+instance Monad m => Serial m Int8 where series = ints
+instance Monad m => CoSerial m Int8 where coseries = coInts
 
-instance Monad m => Serial m Int16 where
-    series = (fromIntegral :: Int -> Int16) <$> series
-instance Monad m => CoSerial m Int16 where
-    coseries rs = (. (fromIntegral :: Int16 -> Int)) <$> coseries rs
+instance Monad m => Serial m Int16 where series = ints
+instance Monad m => CoSerial m Int16 where coseries = coInts
 
-instance Monad m => Serial m Int32 where
-    series = (fromIntegral :: Int -> Int32) <$> series
-instance Monad m => CoSerial m Int32 where
-    coseries rs = (. (fromIntegral :: Int32 -> Int)) <$> coseries rs
+instance Monad m => Serial m Int32 where series = ints
+instance Monad m => CoSerial m Int32 where coseries = coInts
 
-instance Monad m => Serial m Int64 where
-    series = (fromIntegral :: Int -> Int64) <$> series
-instance Monad m => CoSerial m Int64 where
-    coseries rs = (. (fromIntegral :: Int64 -> Int)) <$> coseries rs
+instance Monad m => Serial m Int64 where series = ints
+instance Monad m => CoSerial m Int64 where coseries = coInts
+
+ints :: (Monad m, Integral n, Bounded n) => Series m n
+ints = generate (\d -> if d >= 0 then pure 0 else empty) <|>
+    nats `interleave` (fmap negate nats)
+  where
+    nats = generate $ \d -> take d [1..maxBound]
+
+coInts :: (Integral n, CoSerial m n) => Series m b -> Series m (n -> b)
+coInts rs =
+    alts0 rs >>- \z ->
+    alts1 rs >>- \f ->
+    alts1 rs >>- \g ->
+    return $ \i -> if
+      | i > 0 -> f (i - 1)
+      | i < 0 -> g ((abs i - 1))
+      | otherwise -> z
 
 instance Monad m => Serial m Word where series = nats0
 instance Monad m => CoSerial m Word where coseries = conats0
