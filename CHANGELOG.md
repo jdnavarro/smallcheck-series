@@ -4,6 +4,10 @@ follows the formatting recommendations from [Keep a
 CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## [0.5.1] - 2015-09-01
+### Fixed
+- Intances of `Word` and `Int` now stop generating at its maxium bound.
+
 ## [0.5] - 2015-08-31
 ### Changed
 - `Text` and `ByteString` Serial instances are now exhaustive.
