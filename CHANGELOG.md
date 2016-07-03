@@ -4,6 +4,16 @@ follows the formatting recommendations from [Keep a
 CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## [0.6] - 2016-07-03
+### Added
+- Support for `base-4.9` which comes bundled with `GHC-8.0.1`.
+
+### Removed
+- Support for `GHC-7.8.4`. For some reason with this version the `transformers`
+  dependency is pinned to 0.3.0.0. I don't have time to fix this issue but if
+  you know how to fix it PRs are welcome.
+- Support for stack.
+
 ## [0.5.1] - 2015-09-01
 ### Fixed
 - Intances of `Word` and `Int` now stop generating at its maxium bound.
@@ -42,6 +52,8 @@ Versioning](http://semver.org/).
 - Initial set of utilities for creating `ByteString` and `Text` `Series`.
 - `Serial` `ByteString` and `Text` instances.
 
+[0.6]: https://github.com/jdnavarro/smallcheck-series/compare/v0.5.1...v0.6
+[0.5.1]: https://github.com/jdnavarro/smallcheck-series/compare/v0.5...v0.5.1
 [0.5]: https://github.com/jdnavarro/smallcheck-series/compare/v0.4...v0.5
 [0.4]: https://github.com/jdnavarro/smallcheck-series/compare/v0.3...v0.4
 [0.3]: https://github.com/jdnavarro/smallcheck-series/compare/v0.2...v0.3
