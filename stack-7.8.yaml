@@ -1,6 +1,0 @@
-flags: {}
-packages:
-- '.'
-extra-deps:
-- doctest-0.10.1
-resolver: lts-2.22
