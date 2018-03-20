@@ -76,9 +76,6 @@ coInts rs =
       | i < 0 -> g ((abs i - 1))
       | otherwise -> z
 
-instance Monad m => Serial m Word where series = nats0
-instance Monad m => CoSerial m Word where coseries = conats0
-
 instance Monad m => Serial m Word8 where series = nats0
 instance Monad m => CoSerial m Word8 where coseries = conats0
 
