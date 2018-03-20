@@ -32,7 +32,7 @@ library
                        Test.SmallCheck.Series.Text
                        Test.SmallCheck.Series.Text.Lazy
                        Test.SmallCheck.Series.Utils
-  build-depends:       base >=4.6 && <4.10,
+  build-depends:       base >=4.6 && <4.12,
                        bytestring >=0.10.0.2,
                        containers >=0.5.0.0,
                        text >=0.11.3,
@@ -46,6 +46,6 @@ test-suite doctests
   hs-source-dirs:      tests
   main-is:             doctests.hs
   ghc-options:         -Wall -threaded
-  build-depends:       base >=4.6 && <4.10,
+  build-depends:       base >=4.6 && <4.12,
                        Glob >=0.7.5,
                        doctest >=0.9.10
