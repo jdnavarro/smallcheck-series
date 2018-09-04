@@ -48,6 +48,8 @@ import qualified Data.Map as Map
 import Test.SmallCheck.Series
 import Control.Monad.Logic (interleave)
 
+#if !MIN_VERSION_smallcheck(1,1,4)
+
 instance Monad m => Serial m Int8 where series = ints
 instance Monad m => CoSerial m Int8 where coseries = coInts
 
@@ -76,6 +78,11 @@ coInts rs =
       | i < 0 -> g ((abs i - 1))
       | otherwise -> z
 
+#if !MIN_VERSION_smallcheck(1,1,3)
+instance Monad m => Serial m Word where series = nats0
+instance Monad m => CoSerial m Word where coseries = conats0
+#endif
+
 instance Monad m => Serial m Word8 where series = nats0
 instance Monad m => CoSerial m Word8 where coseries = conats0
 
@@ -99,6 +106,8 @@ conats0 rs =
     if n > 0
         then f (n-1)
         else z
+
+#endif
 
 instance Monad m => Serial m B.ByteString where
     series = cons0 B.empty \/ cons2 B.cons
