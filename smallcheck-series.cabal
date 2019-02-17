@@ -1,5 +1,5 @@
 name:                smallcheck-series
-version:             0.6
+version:             0.6.1
 synopsis:            Extra SmallCheck series and utilities
 description:
   Orphan
@@ -17,7 +17,7 @@ category:            Testing
 build-type:          Simple
 extra-source-files:  README.md CHANGELOG.md AUTHORS.md
 cabal-version:       >=1.10
-tested-with:         GHC == 8.0.1
+tested-with:         GHC == 8.0.1, GHC == 8.4.4
 
 source-repository head
   type: git

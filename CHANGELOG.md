@@ -4,6 +4,11 @@ follows the formatting recommendations from [Keep a
 CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## [0.6.1] - 2019-02-17
+### Fixed
+- `base` version bump to `4.13`.
+- Conditionally exclude instances already supported by `smallcheck-1.1.3`.
+
 ## [0.6] - 2016-07-03
 ### Added
 - Support for `base-4.9` which comes bundled with `GHC-8.0.1`.
@@ -52,6 +57,7 @@ Versioning](http://semver.org/).
 - Initial set of utilities for creating `ByteString` and `Text` `Series`.
 - `Serial` `ByteString` and `Text` instances.
 
+[0.6.1]: https://github.com/jdnavarro/smallcheck-series/compare/v0.6...v0.6.1
 [0.6]: https://github.com/jdnavarro/smallcheck-series/compare/v0.5.1...v0.6
 [0.5.1]: https://github.com/jdnavarro/smallcheck-series/compare/v0.5...v0.5.1
 [0.5]: https://github.com/jdnavarro/smallcheck-series/compare/v0.4...v0.5
