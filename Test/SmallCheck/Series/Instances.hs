@@ -36,17 +36,19 @@ module Test.SmallCheck.Series.Instances () where
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative ((<$>), pure)
 #endif
+#if !MIN_VERSION_smallcheck(1,1,4)
 import Control.Applicative ((<|>), empty)
+import Control.Monad.Logic (interleave)
 import Data.Int
 import Data.Word
+#endif
+import qualified Data.Map as Map
+import Data.Map (Map)
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
-import Data.Map (Map)
-import qualified Data.Map as Map
 import Test.SmallCheck.Series
-import Control.Monad.Logic (interleave)
 
 #if !MIN_VERSION_smallcheck(1,1,4)
 
