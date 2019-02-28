@@ -1,5 +1,5 @@
 {-|
-Extra utility functions to manipulate 'Series'.
+Extra utility functions to manipulate 'Test.SmallCheck.Series'.
 -}
 module Test.SmallCheck.Series.Utils
   (

@@ -30,7 +30,7 @@ import Test.SmallCheck.Series
 import qualified Test.SmallCheck.Series.ByteString.Lazy as L.Series
 
 -- | A 'Data.ByteString.ByteString' 'Series' that grows by replicating
---   the @97@ 'Word8', which encodes the 'a' 'Char' in @ASCII@.
+--   the @97@ 'Word8', which encodes the @\'a\'@ 'Char' in @ASCII@.
 --
 -- >>> list 4 replicateA
 -- ["","a","aa","aaa","aaaa"]
