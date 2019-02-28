@@ -46,6 +46,6 @@ test-suite doctests
   hs-source-dirs:      tests
   main-is:             doctests.hs
   ghc-options:         -Wall -threaded
-  build-depends:       base >=4.6 && <4.12,
+  build-depends:       base >=4.6 && <4.13,
                        Glob >=0.7.5,
                        doctest >=0.9.10
