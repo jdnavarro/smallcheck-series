@@ -1,5 +1,6 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE MultiWayIf #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
@@ -20,6 +21,7 @@
 * 'Data.Text.Text'
 * 'Data.Text.Lazy.Text'
 * 'Data.Text.Lazy.Text'
+* 'Data.Set.Set'
 * 'Data.Map.Map'
 
 By default the most exhaustive series are provided which can lead to
@@ -42,6 +44,9 @@ import Control.Monad.Logic (interleave)
 import Data.Int
 import Data.Word
 #endif
+import Data.Functor.Identity (Identity)
+import qualified Data.Set as Set
+import Data.Set (Set)
 import qualified Data.Map as Map
 import Data.Map (Map)
 import qualified Data.ByteString as B
@@ -49,7 +54,7 @@ import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
 import Test.SmallCheck.Series
-
+import Test.SmallCheck.Series.Instances.Internal
 #if !MIN_VERSION_smallcheck(1,1,4)
 
 instance Monad m => Serial m Int8 where series = ints
@@ -150,6 +155,9 @@ instance Monad m => CoSerial m TL.Text where
             return $ \bs -> case TL.uncons bs of
                 Nothing -> y
                 Just (b,bs') -> f (TL.singleton b) bs'
+
+instance (Num a, Ord a, Serial m a, Serial Identity a) => Serial m (Set a) where
+  series = fmap Set.fromList sets
 
 instance (Serial m k, Serial m v) => Serial m (Map k v) where
     series = Map.singleton <$> series <~> series

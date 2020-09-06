@@ -29,6 +29,7 @@ library
   exposed-modules:     Test.SmallCheck.Series.ByteString
                        Test.SmallCheck.Series.ByteString.Lazy
                        Test.SmallCheck.Series.Instances
+                       Test.SmallCheck.Series.Instances.Internal
                        Test.SmallCheck.Series.Text
                        Test.SmallCheck.Series.Text.Lazy
                        Test.SmallCheck.Series.Utils
@@ -49,3 +50,10 @@ test-suite doctests
   build-depends:       base >=4.6 && <4.13,
                        Glob >=0.7.5,
                        doctest >=0.9.10
+
+test-suite checks
+           default-language:    Haskell2010
+           type:                exitcode-stdio-1.0
+           hs-source-dirs:      tests
+           main-is:             Main.hs
+           build-depends:       base, smallcheck, smallcheck-series, tasty, tasty-smallcheck, tasty-hunit
