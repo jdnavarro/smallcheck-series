@@ -17,7 +17,7 @@ category:            Testing
 build-type:          Simple
 extra-source-files:  README.md CHANGELOG.md AUTHORS.md
 cabal-version:       >=1.10
-tested-with:         GHC == 8.0.1, GHC == 8.4.4
+tested-with:         GHC == 8.10.2, GHC == 8.8.2, GHC == 8.6.5, GHC == 8.4.4, GHC == 8.2.2, GHC == 8.0.2
 
 source-repository head
   type: git
@@ -32,7 +32,7 @@ library
                        Test.SmallCheck.Series.Text
                        Test.SmallCheck.Series.Text.Lazy
                        Test.SmallCheck.Series.Utils
-  build-depends:       base >=4.6 && <4.13,
+  build-depends:       base >=4.6 && <4.15,
                        bytestring >=0.10.0.2,
                        containers >=0.5.0.0,
                        text >=0.11.3,
@@ -46,6 +46,6 @@ test-suite doctests
   hs-source-dirs:      tests
   main-is:             doctests.hs
   ghc-options:         -Wall -threaded
-  build-depends:       base >=4.6 && <4.13,
+  build-depends:       base >=4.6 && <4.15,
                        Glob >=0.7.5,
                        doctest >=0.9.10
