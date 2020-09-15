@@ -12,7 +12,7 @@ bug-reports:         https://github.com/jdnavarro/smallcheck-series/issues
 license:             BSD3
 license-file:        LICENSE
 author:              Danny Navarro <j@dannynavarro.net>
-maintainer:          Jan Path <jan@jpath.de>
+maintainer:          Jan Path <jan@jpath.de>, Ignat Insarov <kindaro@gmail.com>
 category:            Testing
 build-type:          Simple
 extra-source-files:  README.md CHANGELOG.md AUTHORS.md
