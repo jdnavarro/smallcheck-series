@@ -4,6 +4,11 @@ follows the formatting recommendations from [Keep a
 CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## [0.6.1.1] - Tuesday, 15 of September 2020
+### Fixed
+- Allow `base` versions up to `4.15`.
+- Run continuous integration with more compiler versions, up to `GHC-8.10.2`
+
 ## [0.6.1] - 2019-02-17
 ### Fixed
 - `base` version bump to `4.13`.
