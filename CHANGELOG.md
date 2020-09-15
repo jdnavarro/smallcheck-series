@@ -4,6 +4,10 @@ follows the formatting recommendations from [Keep a
 CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## [0.7.0.0] — Tuesday, 15 of September 2020
+### Added
+- An instance `Serial` for `Set`.
+
 ## [0.6.1.1] - Tuesday, 15 of September 2020
 ### Fixed
 - Allow `base` versions up to `4.15`.
