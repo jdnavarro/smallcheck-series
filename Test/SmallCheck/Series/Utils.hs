@@ -8,7 +8,10 @@ module Test.SmallCheck.Series.Utils
   , zipLogic3
   ) where
 
-import Control.Monad.Logic ((<=<), MonadLogic(msplit), lift, mplus, mzero)
+import Control.Applicative (empty, (<|>))
+import Control.Monad ((<=<))
+import Control.Monad.Logic (MonadLogic(msplit))
+import Control.Monad.Trans.Class (lift)
 import Control.Monad.Trans.Maybe (MaybeT(..), runMaybeT)
 
 -- $setup
@@ -32,10 +35,10 @@ import Control.Monad.Trans.Maybe (MaybeT(..), runMaybeT)
 -- Thanks to Roman Cheplyaka: https://groups.google.com/d/msg/haskell-tasty/k0dXCx9EBsc/XYkCTjYKqswJ
 zipLogic :: MonadLogic m => m a -> m b -> m (a, b)
 zipLogic gx gy =
-  maybe mzero return <=< runMaybeT $ do
+  maybe empty pure <=< runMaybeT $ do
     (x, rx) <- MaybeT (msplit gx)
     (y, ry) <- MaybeT (msplit gy)
-    lift $ return (x, y) `mplus` zipLogic rx ry
+    lift $ pure (x, y) <|> zipLogic rx ry
 
 -- | /One-to-One/ zipping of 3 'MonadLogic' instances. You can use for
 --   'Test.SmallCheck.Series' like this:
@@ -46,8 +49,8 @@ zipLogic gx gy =
 -- Thanks to Roman Cheplyaka: https://groups.google.com/d/msg/haskell-tasty/k0dXCx9EBsc/XYkCTjYKqswJ
 zipLogic3 :: MonadLogic m => m a -> m b -> m c -> m (a, b, c)
 zipLogic3 gx gy gz =
-  maybe mzero return <=< runMaybeT $ do
+  maybe empty pure <=< runMaybeT $ do
     (x, rx) <- MaybeT (msplit gx)
     (y, ry) <- MaybeT (msplit gy)
     (z, rz) <- MaybeT (msplit gz)
-    lift $ return (x, y, z) `mplus` zipLogic3 rx ry rz
+    lift $ pure (x, y, z) <|> zipLogic3 rx ry rz
